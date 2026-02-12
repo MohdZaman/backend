@@ -7,7 +7,7 @@ import fs from 'fs';
         api_secret: process.env.CLOUDINARY_API_SECRET
     });
 
-    const uploadCLoudinary = async(localFilePath) => {
+    const uploadOnCloudinary = async(localFilePath) => {
         try {
             if(!localFilePath) return null;
        const response = await  cloudinary.uploader.upload(localFilePath,{
@@ -20,4 +20,4 @@ import fs from 'fs';
             return null;
         }
     }
- export {uploadCLoudinary};
+ export {uploadOnCloudinary};
