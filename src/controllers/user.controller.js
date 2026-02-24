@@ -139,8 +139,8 @@ const logoutUser = asynchandler(async(req,res)=>{
   await  User.findByIdAndUpdate(
         req.user._id,
     {
-        $set: {
-            refreshToken: undefined
+        $unset: {
+            refreshToken: 1
         }
     },
         {
@@ -301,11 +301,13 @@ const getUserchannelprofile = asynchandler(async(req,res)=>{
   const channel =  await  User.aggregate([
     {
         $match:{
-            username: username?.toLowerCase
+            username: username?.toLowerCase()
         },
+    },
+    {
         $lookup:{
             from: "subscriptions",
-            localfield: "_id",
+            localField: "_id",
             foreignField: "channel",
             as: "subscribers"
         }
@@ -313,7 +315,7 @@ const getUserchannelprofile = asynchandler(async(req,res)=>{
     {
      $lookup:{
          from: "subscriptions",
-            localfield: "_id",
+            localField: "_id",
             foreignField: "subscriber",
             as: "subscribedTo"
      }
@@ -389,7 +391,7 @@ const getWatchHistory = asynchandler(async(req,res)=>{
                 }
             },
             {
-                $addfield:{
+                $addFields:{
                     owner:{
                         $first: "$owner"
                     }
@@ -423,5 +425,5 @@ export {
     updateUserCoverImage,
     getUserchannelprofile,
     getWatchHistory,
-
+    
 }
